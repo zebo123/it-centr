@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    
+    <style>
+        /* Окно аутентификации */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: flex; /* По умолчанию видимо */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* Основной контент - изначально скрыт */
+        .admin-content {
+            display: none;
+        }
+
+        /* Ваши оригинальные стили */
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: rgb(255, 255, 255);
+            margin: 0;
+            padding: 20px;
+        }
+        button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .logout-btn {
+            background: #ffc107;
+            color: black;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+        .user-card {
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .balance-control {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            padding: 8px;
+            width: 150px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: #333;
+            color: white;
+            .add-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .subtract-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .logout-btn {
+            background: #ffc107;
+            color: black;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* ... остальные ваши стили ... */
+    </style>
+</head>
+<body>
+    <!-- Окно входа -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-box">
+            <h3>Faqat Admin uchun</h3>
+            <input type="text" id="login" placeholder="Логин">
+            <input type="password" id="password" placeholder="Пароль">
+            <button onclick="checkAuth()">Войти</button>
+            <div id="authError" style="display:none; color:red;">Ошибка!</div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="admin-content" id="adminContent">
+        <h1>ADMIN PANEL!</h1>
+        <button class="logout-btn" onclick="logout()">Выйти</button>
+        <div id="usersList"></div>
+    </div>
+
+    <script>
+        // Ваши данные для входа
+        const ADMIN_DATA = {
+            login: "zeboniso",
+            password: "zeb123zeb123"
+        };
+
+        function checkAuth() {
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+            
+            if(login === ADMIN_DATA.login && password === ADMIN_DATA.password) {
+                // Показываем контент
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                sessionStorage.setItem('auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('auth');
+            location.reload();
+        }
+
+        // Проверка при загрузке
+        window.onload = function() {
+            if(sessionStorage.getItem('auth') === 'true') {
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+            } else {
+                document.getElementById('authOverlay').style.display = 'flex';
+            }
+        };
+    </script>
+    <script>
+        function logout() {
+            window.location.href = "./kabinet.html"; // Файл для выхода
+        }
+    </script>
+</body>
+</html>
